@@ -10,8 +10,13 @@
   },
   "dependencies": {
     "@ai-sdk/react": "^1.2.12",
+    "@lazai-labs/alith-win32-x64-msvc": "^0.10.3",
+    "@lifi/sdk": "^3.7.9",
+    "@lifi/types": "^17.18.0",
+    "@openrouter/ai-sdk-provider": "^0.7.2",
     "@radix-ui/react-slot": "^1.2.3",
     "ai": "^4.3.16",
+    "alith": "^0.10.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",
@@ -19,8 +24,6 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.1",
-    "@lifi/sdk": "^3.7.9",
-    "@lifi/types": "^17.18.0",
     "viem": "^2.31.0",
     "wagmi": "^2.15.6",
     "zod": "3.25.67"
@@ -28,6 +31,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/json-schema": "^7.0.15",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
