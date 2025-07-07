@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/react": "^1.2.12",
     "@radix-ui/react-slot": "^1.2.3",
     "ai": "^4.3.16",
     "class-variance-authority": "^0.7.1",
@@ -17,7 +18,12 @@
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "@lifi/sdk": "^3.7.9",
+    "@lifi/types": "^17.18.0",
+    "viem": "^2.31.0",
+    "wagmi": "^2.15.6",
+    "zod": "3.25.67"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
