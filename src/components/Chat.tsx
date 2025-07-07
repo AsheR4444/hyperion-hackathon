@@ -75,12 +75,17 @@ export function Chat() {
   };
 
   return (
-    <div className="flex flex-col justify-end min-h-screen w-full max-w-4xl mx-auto py-4">
-      {/* Сообщения чата */}
-      <ChatMessages messages={messages} isLoading={isLoading} />
+    <div className="h-full flex flex-col">
+      {/* Сообщения чата - растут сверху вниз */}
+      <div className="flex-1 overflow-y-auto pt-4">
+        <ChatMessages messages={messages} isLoading={isLoading} />
+      </div>
 
-      {/* Форма ввода */}
-      <div className="flex-shrink-0">
+      {/* Форма ввода - зафиксирована внизу с отступом 30px */}
+      <div
+        className="flex-shrink-0 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+        style={{ paddingBottom: "30px" }}
+      >
         <SearchForm onSendMessage={handleSendMessage} isLoading={isLoading} />
       </div>
     </div>

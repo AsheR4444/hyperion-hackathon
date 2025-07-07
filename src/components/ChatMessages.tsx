@@ -28,8 +28,8 @@ export function ChatMessages({
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto mb-8">
-      <div className="max-h-[60vh] overflow-y-auto px-4 sm:px-0 space-y-1">
+    <div className="w-full max-w-3xl mx-auto px-4 sm:px-0">
+      <div className="space-y-1">
         {messages.map((message) => (
           <div key={message.id}>
             {message.type === "user" ? (

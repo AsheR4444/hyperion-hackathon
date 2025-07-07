@@ -44,15 +44,6 @@ export function AgentMessage({
                 </p>
               )}
             </div>
-
-            {!isLoading && (
-              <div className="text-xs text-gray-400 mt-1">
-                {message.timestamp.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </div>
-            )}
           </div>
         </div>
       </div>

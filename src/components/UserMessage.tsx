@@ -14,12 +14,6 @@ export function UserMessage({ message }: UserMessageProps) {
             {message.content}
           </p>
         </div>
-        <div className="text-xs text-gray-400 mt-1 text-right">
-          {message.timestamp.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </div>
       </div>
     </div>
   );
