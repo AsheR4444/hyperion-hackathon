@@ -1,12 +1,19 @@
 import { systemPrompt } from '@/lib/alith'
 import { Agent } from 'alith'
 import { NextResponse } from 'next/server'
+import { z } from 'zod'
+
+export const InputSchema = z
+  .object({
+    x: z.number().describe('The number to substract from'),
+    y: z.number().describe('The number to substract'),
+  })
+  .strip()
 
 const agent = new Agent({
-  model: 'deepseek-chat',
-  apiKey: process.env.DEEPSEEK_API_KEY,
+  model: 'gpt-4',
+  apiKey: process.env.OPENAI_API_KEY,
   preamble: systemPrompt,
-  baseUrl: 'api.deepseek.com',
 })
 
 export async function POST(req: Request) {
@@ -16,14 +23,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Message is required and must be a string' }, { status: 400 })
   }
 
-  // Inject wallet status so the LLM can decide if it should ask the user to connect
-  const walletInfoMessage = {
-    role: 'system' as const,
-    content: walletAddress ? `USER_WALLET_ADDRESS: ${walletAddress}` : 'USER_WALLET_ADDRESS: none',
-  }
-
   // Get response from the agent
-  const response = await agent.prompt(message)
+  const newMessage = `USER_WALLET_ADDRESS: ${walletAddress}\n\n${message}`
+  const response = await agent.prompt(newMessage)
 
   console.log(response)
 
