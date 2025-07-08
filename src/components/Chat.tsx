@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Message } from '@/types/chat'
 import { ChatMessages } from './ChatMessages'
 import { SearchForm } from './SearchForm'
+import { SwapForm } from './swap-form'
 
 // Симуляция ответа агента
 const simulateAgentResponse = async (userMessage: string): Promise<string> => {
@@ -68,10 +69,11 @@ export function Chat() {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col max-w-[768px] w-full mx-auto">
       {/* Сообщения чата - растут сверху вниз */}
       <div className="flex-1 overflow-y-auto pt-4">
         <ChatMessages messages={messages} isLoading={isLoading} />
+        <SwapForm />
       </div>
 
       {/* Форма ввода - зафиксирована внизу с отступом 30px */}
