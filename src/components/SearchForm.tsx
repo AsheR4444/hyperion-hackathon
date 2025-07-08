@@ -1,40 +1,35 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, Paperclip, Mic, Send } from "lucide-react";
+import React, { useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Search, Send } from 'lucide-react'
 
 interface SearchFormProps {
-  onSendMessage: (message: string) => void;
-  isLoading?: boolean;
+  onSendMessage: (message: string) => void
+  isLoading?: boolean
 }
 
-export function SearchForm({
-  onSendMessage,
-  isLoading = false,
-}: SearchFormProps) {
-  const [query, setQuery] = useState("");
+export function SearchForm({ onSendMessage, isLoading = false }: SearchFormProps) {
+  const [query, setQuery] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (query.trim() && !isLoading) {
-      onSendMessage(query.trim());
-      setQuery("");
+      onSendMessage(query.trim())
+      setQuery('')
     }
-  };
+  }
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-0">
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative flex items-center">
-          {/* Иконка поиска слева */}
           <Search className="absolute left-3 sm:left-4 h-4 w-4 sm:h-5 sm:w-5 text-gray-400 z-10" />
 
-          {/* Поле ввода */}
           <Input
             type="text"
-            placeholder="Ask anything or @ mention a Space"
+            placeholder="Swap 0.01 ETH for MNT"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-10 sm:pl-12 pr-28 sm:pr-32 py-3 sm:py-4 h-12 sm:h-14 
@@ -43,28 +38,7 @@ export function SearchForm({
                      placeholder:text-gray-400 text-gray-100 shadow-lg w-full"
           />
 
-          {/* Группа иконок справа */}
           <div className="absolute right-1 sm:right-2 flex items-center gap-0.5 sm:gap-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-gray-700/50 rounded-lg sm:rounded-xl 
-                       text-gray-400 hover:text-gray-300 transition-colors"
-            >
-              <Paperclip className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </Button>
-
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-gray-700/50 rounded-lg sm:rounded-xl 
-                       text-gray-400 hover:text-gray-300 transition-colors"
-            >
-              <Mic className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </Button>
-
             <Button
               type="submit"
               size="icon"
@@ -78,5 +52,5 @@ export function SearchForm({
         </div>
       </form>
     </div>
-  );
+  )
 }

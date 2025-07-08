@@ -1,78 +1,71 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { Message } from "@/types/chat";
-import { ChatMessages } from "./ChatMessages";
-import { SearchForm } from "./SearchForm";
+import React, { useState } from 'react'
+import { Message } from '@/types/chat'
+import { ChatMessages } from './ChatMessages'
+import { SearchForm } from './SearchForm'
+
+// Симуляция ответа агента
+const simulateAgentResponse = async (userMessage: string): Promise<string> => {
+  // Простые ответы для демонстрации
+  const responses = [
+    `Интересный вопрос о "${userMessage}". Позвольте мне подумать...`,
+    `Вы спросили: "${userMessage}". Это действительно важная тема.`,
+    `Относительно "${userMessage}" - есть несколько аспектов, которые стоит рассмотреть.`,
+    `Спасибо за вопрос о "${userMessage}". Вот что я могу сказать по этому поводу...`,
+    `"${userMessage}" - отличная тема для обсуждения. Давайте разберем это подробнее.`,
+  ]
+
+  // Случайная задержка 1-3 секунды
+  await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 2000))
+
+  return responses[Math.floor(Math.random() * responses.length)]
+}
 
 export function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Симуляция ответа агента
-  const simulateAgentResponse = async (
-    userMessage: string
-  ): Promise<string> => {
-    // Простые ответы для демонстрации
-    const responses = [
-      `Интересный вопрос о "${userMessage}". Позвольте мне подумать...`,
-      `Вы спросили: "${userMessage}". Это действительно важная тема.`,
-      `Относительно "${userMessage}" - есть несколько аспектов, которые стоит рассмотреть.`,
-      `Спасибо за вопрос о "${userMessage}". Вот что я могу сказать по этому поводу...`,
-      `"${userMessage}" - отличная тема для обсуждения. Давайте разберем это подробнее.`,
-    ];
-
-    // Случайная задержка 1-3 секунды
-    await new Promise((resolve) =>
-      setTimeout(resolve, 1000 + Math.random() * 2000)
-    );
-
-    return responses[Math.floor(Math.random() * responses.length)];
-  };
+  const [messages, setMessages] = useState<Message[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSendMessage = async (content: string) => {
     // Создаем сообщение пользователя
     const userMessage: Message = {
       id: Date.now().toString(),
-      type: "user",
+      type: 'user',
       content,
-      timestamp: new Date(),
-    };
+    }
 
     // Добавляем сообщение пользователя
-    setMessages((prev) => [...prev, userMessage]);
-    setIsLoading(true);
+    setMessages((prev) => [...prev, userMessage])
+    setIsLoading(true)
 
     try {
       // Получаем ответ агента
-      const agentResponse = await simulateAgentResponse(content);
+      const agentResponse = await simulateAgentResponse(content)
 
       // Создаем сообщение агента
       const agentMessage: Message = {
         id: (Date.now() + 1).toString(),
-        type: "agent",
+        type: 'agent',
         content: agentResponse,
-        timestamp: new Date(),
-      };
+      }
 
       // Добавляем ответ агента
-      setMessages((prev) => [...prev, agentMessage]);
+      setMessages((prev) => [...prev, agentMessage])
     } catch (error) {
-      console.error("Ошибка при получении ответа:", error);
+      console.error('Ошибка при получении ответа:', error)
 
       // Сообщение об ошибке
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        type: "agent",
-        content: "Извините, произошла ошибка. Попробуйте еще раз.",
-        timestamp: new Date(),
-      };
+        type: 'agent',
+        content: 'Извините, произошла ошибка. Попробуйте еще раз.',
+      }
 
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage])
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="h-full flex flex-col">
@@ -82,12 +75,9 @@ export function Chat() {
       </div>
 
       {/* Форма ввода - зафиксирована внизу с отступом 30px */}
-      <div
-        className="flex-shrink-0 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
-        style={{ paddingBottom: "30px" }}
-      >
+      <div className="flex-shrink-0 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-5">
         <SearchForm onSendMessage={handleSendMessage} isLoading={isLoading} />
       </div>
     </div>
-  );
+  )
 }
