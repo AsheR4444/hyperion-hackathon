@@ -74,7 +74,17 @@ export function Chat() {
       <div className="flex-1 overflow-y-auto pt-4 scrollbar-hide pb-10">
         <ChatMessages messages={messages} isLoading={isLoading} />
 
-        <SwapContainer />
+        <SwapContainer
+          actionType="swap"
+          amount="100"
+          fromAsset="metis"
+          fromChain="metis"
+          toAsset="m.USDT"
+          toChain="metis"
+          address="0x72D2Af8EF64196F8A9267803b775Bf2342910083"
+          fromTokenDecimals={18}
+          toTokenDecimals={18}
+        />
       </div>
 
       {/* Форма ввода - зафиксирована внизу с отступом 30px */}

@@ -9,14 +9,14 @@ const SwapDataSchema = z
     toChain: z.string(),
     eoaAddress: z.string(),
     toAddress: z.string(),
-    slippage: z.string(),
+    slippage: z.string().optional(),
     //provider: z.string(),
   })
   .strict()
 
 const PipelineItemSchema = z
   .object({
-    actionType: z.enum(['swap']),
+    actionType: z.enum(['swap', 'bridge']),
     swapData: SwapDataSchema,
   })
   .strict()

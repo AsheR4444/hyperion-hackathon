@@ -10,7 +10,7 @@ type SwapData = {
   fromToken: string
   toToken: string
   fromAmount: string
-  slippage: string
+  slippage?: string | undefined
 }
 
 export const getTransaction = async (swapData: SwapData): Promise<TransactionResponseType> => {
@@ -21,8 +21,8 @@ export const getTransaction = async (swapData: SwapData): Promise<TransactionRes
     fromToken: swapData.fromToken,
     toToken: swapData.toToken,
     fromAmount: swapData.fromAmount,
-    slippage: swapData.slippage,
-    //fee: '0.0035',
+    //slippage: swapData.slippage,
+    //fee: '0.02', // 2%
   })
 
   const transformedQuote = {

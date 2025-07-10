@@ -1,24 +1,132 @@
 'use client'
 
-import { FC, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { SwapForm, SwapData, SwapStep } from './form'
 import { ProgressProps } from './components/progress'
+import { useChainId, useSendTransaction, useSwitchChain, useWaitForTransactionReceipt } from 'wagmi'
+import {
+  TransactionApiResult,
+  TransactionRequest,
+  TransactionResponseType,
+} from '@/types/api/transaction'
+import { useDebounce, useTokenApproval } from '@/hooks'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { parseUnits } from 'viem'
+import { getQuote } from '@/lib/lifi'
+import { SwapFormError } from './components/error'
 
-type SwapContainerProps = {
-  className?: string
+type Props = {
+  actionType: 'swap'
+  amount: string
+  fromAsset: string
+  fromChain: string
+  toAsset: string
+  toChain: string
+  address: string
+  slippage?: string | void
+  fromTokenDecimals: number
+  toTokenDecimals: number
 }
 
-const SwapContainer = ({ className }: SwapContainerProps) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [txHash, setTxHash] = useState<`0x${string}` | undefined>(undefined)
-
-  // Step management logic moved from form.tsx
+const SwapContainer: FC<Props> = ({
+  actionType,
+  amount,
+  fromAsset,
+  fromChain,
+  toAsset,
+  toChain,
+  address,
+  slippage,
+  fromTokenDecimals,
+  toTokenDecimals,
+}) => {
+  //
   const [currentStep, setCurrentStep] = useState<SwapStep>('PREPARE')
+  const chainId = useChainId()
+  const { switchChainAsync } = useSwitchChain()
+  const [isSwapping, setIsSwapping] = useState(false)
+  const [fromAmount, setFromAmount] = useState<string>(amount)
+  const [lastValidData, setLastValidData] = useState<TransactionResponseType | null>(null)
+  const [currentError, setCurrentError] = useState<string | null>(null)
+  const lastAmountRef = useRef<string>('')
+  const debouncedAmount = useDebounce(fromAmount, 300)
+
+  const {
+    data: hash,
+    isPending,
+    isError,
+    failureReason,
+    sendTransactionAsync,
+  } = useSendTransaction({
+    mutation: {
+      onMutate: () => {
+        setIsSwapping(true)
+        setCurrentStep('PROGRESS')
+      },
+    },
+  })
+
+  const { status: receiptStatus, error: receiptError } = useWaitForTransactionReceipt({
+    hash,
+    confirmations: 3,
+    query: {
+      refetchOnWindowFocus: false,
+      gcTime: Infinity,
+      staleTime: Infinity,
+    },
+  })
+
+  const txPayload: TransactionRequest = {
+    transaction: {
+      actionType,
+      swapData: {
+        amount: parseUnits(debouncedAmount, fromTokenDecimals).toString(),
+        fromAsset,
+        fromChain,
+        toAsset,
+        toChain,
+        toAddress: address,
+        eoaAddress: address,
+        //slippage,
+      },
+    },
+  }
+
+  const { data, isLoading, isFetching } = useQuery<TransactionApiResult>({
+    queryKey: ['transaction', 'quote', txPayload.transaction],
+    queryFn: () => getQuote(txPayload),
+    enabled: Number(debouncedAmount) > 0 && !isSwapping,
+    refetchOnWindowFocus: !isSwapping && !isError,
+    refetchInterval: 10000,
+    placeholderData: keepPreviousData,
+  })
+
+  const { needsApproval, approve, isApproving, isApproveError, approveError } = useTokenApproval(
+    lastValidData?.fromToken.address || '',
+    lastValidData?.transaction.approvalAddress || undefined,
+    debouncedAmount,
+    fromTokenDecimals,
+    address,
+  )
+
+  // Handle approval errors
+  const approvalError = isApproveError
+    ? (approveError as any)?.shortMessage || 'Approval failed'
+    : null
+
+  // Combined error message
+  const errorMessage = currentError || approvalError
+
+  // Transaction status
+  const txStatus = isError || isApproveError ? 'error' : receiptStatus
+  const txFailureReason =
+    (failureReason as any)?.shortMessage || (receiptError as any)?.shortMessage || approvalError
+
+  // END
+
   const [swapData, setSwapData] = useState<SwapData | null>(null)
 
   const handlePrepareNext = (data: SwapData) => {
-    console.log('📋 Prepare step completed with data:', data)
     setSwapData(data)
 
     // Only advance to CHECK if we're currently on PREPARE
@@ -28,7 +136,6 @@ const SwapContainer = ({ className }: SwapContainerProps) => {
   }
 
   const handleReviewConfirm = () => {
-    console.log('✅ Review confirmed, starting transaction...')
     if (swapData) {
       handleTransaction(swapData)
     }
@@ -37,48 +144,14 @@ const SwapContainer = ({ className }: SwapContainerProps) => {
 
   const handleTransaction = async (data: SwapData) => {
     console.log('🚀 Starting transaction with data:', data)
-
-    setIsLoading(true)
-    setError(null)
-    setTxHash(undefined)
-
-    try {
-      // TODO: Implement actual API calls here
-
-      // Simulate API call for getting quote
-      console.log('📋 Getting quote...', {
-        fromToken: data.fromToken,
-        toToken: data.toToken,
-        amount: data.fromAmount,
-      })
-
-      // Simulate quote API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // Simulate transaction execution
-      console.log('⚡ Executing transaction...')
-
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      // Simulate successful transaction
-      setTxHash('0x1234567890abcdef1234567890abcdef12345678')
-      console.log('✅ Transaction completed successfully!')
-    } catch (err) {
-      console.error('❌ Transaction failed:', err)
-      setError(err instanceof Error ? err.message : 'Transaction failed')
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   // Create progress props based on current state
   const getProgressProps = (): ProgressProps | undefined => {
     if (!swapData) return undefined
 
-    const status = error ? 'error' : isLoading ? 'pending' : 'success'
-
     return {
-      status,
+      status: 'pending',
       receiveToken: {
         symbol: swapData.toToken.symbol,
         amount: swapData.toAmount,
@@ -87,7 +160,7 @@ const SwapContainer = ({ className }: SwapContainerProps) => {
         chain: swapData.toToken.chain,
       },
       explorer: 'https://basescan.org', // TODO: Get from chain config
-      txHash,
+      txHash: undefined,
     }
   }
 
@@ -100,6 +173,8 @@ const SwapContainer = ({ className }: SwapContainerProps) => {
         onReviewConfirm={handleReviewConfirm}
         progressProps={getProgressProps()}
       />
+
+      <SwapFormError error={errorMessage || txFailureReason} />
     </Wrapper>
   )
 }
@@ -109,4 +184,3 @@ const Wrapper: FC<{ children: React.ReactNode }> = ({ children }) => {
 }
 
 export { SwapContainer }
-export type { SwapContainerProps }

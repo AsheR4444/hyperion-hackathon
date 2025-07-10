@@ -47,7 +47,7 @@ export type SwapData = {
   toChain: string
   eoaAddress: string
   toAddress: string
-  slippage: string
+  slippage?: string | undefined
 }
 
 export type PipelineItem = {
