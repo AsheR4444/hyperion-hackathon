@@ -73,6 +73,7 @@ export function Chat() {
       {/* Сообщения чата - растут сверху вниз */}
       <div className="flex-1 overflow-y-auto pt-4">
         <ChatMessages messages={messages} isLoading={isLoading} />
+        <SwapForm.Skeleton />
         <SwapForm />
       </div>
 

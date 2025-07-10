@@ -1,5 +1,6 @@
 import { UseFormRegisterReturn } from 'react-hook-form'
-import { Input } from '../ui/input'
+import { Input } from '../../ui/input'
+import { Skeleton } from '../../ui/skeleton'
 
 type Token = {
   symbol: string
@@ -48,5 +49,29 @@ const SwapInput = ({
   )
 }
 
-export { SwapInput }
+const LoadingSwapInput = () => {
+  return (
+    <div className="bg-gray-800 rounded-xl p-4">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex-1">
+          <Skeleton className="h-6 w-24" />
+          <Skeleton className="h-4 w-16 mt-2" />
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 bg-gray-700 rounded-lg px-3 py-2">
+            <Skeleton className="w-5 h-5 rounded" />
+            <Skeleton className="h-4 w-12" />
+            <Skeleton className="h-3 w-8" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const Component = Object.assign(SwapInput, {
+  Skeleton: LoadingSwapInput,
+})
+
+export { Component as SwapInput }
 export type { SwapInputProps, Token }

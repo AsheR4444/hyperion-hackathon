@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ArrowDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { SwapInput } from './swap-input'
+import { SwapInput } from './components/swap-input'
+import { Skeleton as SkeletonUI } from '../ui/skeleton'
 
 type SwapFormData = {
   fromAmount: string
@@ -24,7 +25,7 @@ const tokens: Token[] = [
   { symbol: 'BTC', name: 'Bitcoin', icon: '₿', chain: 'Mantle' },
 ]
 
-export function SwapForm() {
+const SwapForm = () => {
   const [fromToken, setFromToken] = useState<Token>(tokens[0])
   const [toToken, setToToken] = useState<Token>(tokens[1])
 
@@ -74,3 +75,30 @@ export function SwapForm() {
     </div>
   )
 }
+
+const Skeleton = () => {
+  return (
+    <div className="w-full max-w-md">
+      <h1 className="text-white text-2xl font-semibold mb-6">Swap</h1>
+
+      <div className="space-y-3">
+        <SwapInput.Skeleton />
+
+        {/* Swap Arrow Button */}
+        <div className="flex justify-center">
+          <ArrowDown className="h-5 w-5 text-gray-400 rounded-full" />
+        </div>
+
+        <SwapInput.Skeleton />
+
+        <SkeletonUI className="w-full h-[36px]" />
+      </div>
+    </div>
+  )
+}
+
+const Component = Object.assign(SwapForm, {
+  Skeleton,
+})
+
+export { Component as SwapForm }
