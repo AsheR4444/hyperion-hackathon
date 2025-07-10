@@ -1,6 +1,7 @@
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { Input } from '../../ui/input'
 import { Skeleton } from '../../ui/skeleton'
+import Image from 'next/image'
 
 type Token = {
   symbol: string
@@ -11,6 +12,8 @@ type Token = {
 
 type SwapInputProps = {
   register: UseFormRegisterReturn
+  value?: string
+  onChange?: (value: string) => void
   token: Token
   usdValue: number
   placeholder?: string
@@ -19,6 +22,8 @@ type SwapInputProps = {
 
 const SwapInput = ({
   register,
+  value,
+  onChange,
   token,
   usdValue,
   placeholder = '0.0',
@@ -30,6 +35,8 @@ const SwapInput = ({
         <div>
           <Input
             {...register}
+            value={value}
+            onChange={(e) => onChange?.(e.target.value)}
             type="text"
             className="bg-transparent border-none text-white text-lg font-medium p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0"
             placeholder={placeholder}
@@ -39,7 +46,17 @@ const SwapInput = ({
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 bg-gray-700 rounded-lg px-3 py-2">
-            <span className="text-lg">{token.icon}</span>
+            {token.icon ? (
+              <Image
+                src={token.icon}
+                alt={token.symbol}
+                width={20}
+                height={20}
+                className="rounded-full"
+              />
+            ) : (
+              <Skeleton className="size-5 rounded-full" />
+            )}
             <span className="text-white font-medium">{token.symbol}</span>
             <span className="text-gray-400 text-sm">{token.chain}</span>
           </div>

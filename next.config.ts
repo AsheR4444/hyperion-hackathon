@@ -21,6 +21,30 @@ const nextConfig: NextConfig = {
   },
   // Mark packages as external for server components
   serverExternalPackages: ['@lazai-labs/alith-darwin-arm64', 'alith'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.coingecko.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's2.coinmarketcap.com',
+        pathname: '/**',
+      },
+    ],
+  },
 }
 
 export default nextConfig

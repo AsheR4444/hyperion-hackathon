@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/react": "^1.2.12",
+    "@hookform/resolvers": "^5.1.1",
     "@lazai-labs/alith-win32-x64-msvc": "^0.10.3",
     "@lifi/sdk": "^3.7.9",
     "@lifi/types": "^17.18.0",
@@ -26,6 +27,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.60.0",
+    "react-number-format": "^5.4.4",
     "tailwind-merge": "^3.3.1",
     "viem": "^2.31.0",
     "wagmi": "^2.15.6",

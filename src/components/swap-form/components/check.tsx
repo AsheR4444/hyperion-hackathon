@@ -3,35 +3,48 @@
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Box } from './box'
+import { TransactionResponseType } from '@/types/api/transaction'
+import { FC } from 'react'
+import Image from 'next/image'
+import { NumberFormat } from '@/components/number-format'
+import { formatUnits } from 'viem'
+import { Skeleton } from '@/components/ui/skeleton'
 
-type Token = {
-  symbol: string
-  amount: string
-  icon: string
-}
-
-type TransactionDetails = {
-  minimumReceived: string
-  slippage: string
-  networkFee: string
-  munarFee: string
-}
-
-type TransactionReviewProps = {
-  fromToken: Token
-  toToken: Token
-  details: TransactionDetails
+type Props = {
+  fromToken: {
+    name: string
+    symbol: string
+    amount: number
+    logo?: string
+    decimals: number
+  }
+  toToken: {
+    name: string
+    symbol: string
+    amount: string
+    logo?: string
+    decimals: number
+  }
+  minReceiveAmount: string
+  slippage: number
+  isUpdating: boolean
   onConfirm: () => void
-  onCancel?: () => void
+  gasCosts: TransactionResponseType['gasCosts']
+  buttonDisabled?: boolean
+  buttonText?: string
 }
 
-const TransactionReview = ({
+const TransactionReview: FC<Props> = ({
   fromToken,
   toToken,
-  details,
   onConfirm,
-  onCancel,
-}: TransactionReviewProps) => {
+  minReceiveAmount,
+  slippage,
+  isUpdating,
+  gasCosts,
+  buttonDisabled,
+  buttonText,
+}) => {
   return (
     <Box>
       {/* Header */}
@@ -45,9 +58,17 @@ const TransactionReview = ({
         <div className="flex items-center justify-between mb-8">
           {/* From Token */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center text-lg">
-              {fromToken.icon}
-            </div>
+            {fromToken.logo ? (
+              <Image
+                src={fromToken.logo}
+                alt={fromToken.symbol}
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+            ) : (
+              <Skeleton className="size-10 rounded-full" />
+            )}
             <div>
               <div className="text-white font-medium">{fromToken.symbol}</div>
               <div className="text-white text-lg font-semibold">{fromToken.amount}</div>
@@ -61,9 +82,17 @@ const TransactionReview = ({
 
           {/* To Token */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-lg">
-              {toToken.icon}
-            </div>
+            {toToken.logo ? (
+              <Image
+                src={toToken.logo}
+                alt={toToken.symbol}
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+            ) : (
+              <Skeleton className="size-10 rounded-full" />
+            )}
             <div>
               <div className="text-white font-medium">{toToken.symbol}</div>
               <div className="text-white text-lg font-semibold">{toToken.amount}</div>
@@ -77,28 +106,37 @@ const TransactionReview = ({
         {/* Minimum received */}
         <div className="flex justify-between items-center py-3 border-b border-dotted border-gray-600">
           <span className="text-gray-400">Minimum received</span>
-          <span className="text-white font-medium">{details.minimumReceived}</span>
+          <span className="text-white font-medium">{minReceiveAmount}</span>
         </div>
 
         {/* Slippage */}
         <div className="flex justify-between items-center py-3 border-b border-dotted border-gray-600">
           <span className="text-gray-400">Slippage</span>
-          <span className="text-white font-medium">{details.slippage}</span>
+          <span className="text-white font-medium">{slippage}</span>
         </div>
 
         {/* Network fee */}
         <div className="flex justify-between items-center py-3 border-b border-dotted border-gray-600">
           <span className="text-gray-400">Network fee</span>
-          <span className="text-white font-medium">{details.networkFee}</span>
+          <span className="text-white font-medium">
+            <NumberFormat
+              value={Number(
+                formatUnits(BigInt(gasCosts?.[0]?.amount || 0), gasCosts?.[0]?.token.decimals || 0),
+              )}
+              displayType="text"
+              thousandSeparator=","
+              fixedDecimalScale
+              suffix={gasCosts?.[0]?.token.symbol}
+              hideCurrency
+            />
+          </span>
         </div>
 
         {/* OrbitAI fee */}
         <div className="flex justify-between items-center py-3">
           <span className="text-gray-400">OrbitAI fee</span>
           <div className="flex items-center gap-2">
-            <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-md">
-              {details.munarFee}
-            </span>
+            <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-md">0.0%</span>
           </div>
         </div>
       </div>
@@ -115,4 +153,3 @@ const TransactionReview = ({
 }
 
 export { TransactionReview }
-export type { TransactionReviewProps, Token as TransactionToken, TransactionDetails }

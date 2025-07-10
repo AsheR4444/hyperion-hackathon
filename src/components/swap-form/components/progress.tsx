@@ -1,8 +1,11 @@
 import { CircleXIcon, CheckCircle2Icon, Loader2Icon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Box } from './box'
+import { FC } from 'react'
+import Image from 'next/image'
+import { Skeleton } from '@/components/ui/skeleton'
 
-type ProgressProps = {
+type Props = {
   status: 'pending' | 'success' | 'error'
   receiveToken: {
     symbol: string
@@ -15,7 +18,7 @@ type ProgressProps = {
   txHash: `0x${string}` | undefined
 }
 
-const Progress = ({ status, receiveToken, explorer, txHash }: ProgressProps) => {
+const Progress: FC<Props> = ({ status, receiveToken, explorer, txHash }) => {
   const getStatusConfig = () => {
     switch (status) {
       case 'pending':
@@ -59,9 +62,17 @@ const Progress = ({ status, receiveToken, explorer, txHash }: ProgressProps) => 
 
         {/* Token Info */}
         <div className="flex items-center gap-3 bg-gray-800 rounded-xl p-4">
-          <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-            <span className="text-lg">{receiveToken.logo}</span>
-          </div>
+          {receiveToken.logo ? (
+            <Image
+              src={receiveToken.logo}
+              alt={receiveToken.symbol}
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+          ) : (
+            <Skeleton className="size-10 rounded-full" />
+          )}
           <div className="text-left">
             <div className="text-white font-semibold text-lg">
               {receiveToken.amount} {receiveToken.symbol}
@@ -85,4 +96,3 @@ const Progress = ({ status, receiveToken, explorer, txHash }: ProgressProps) => 
 }
 
 export { Progress }
-export type { ProgressProps }

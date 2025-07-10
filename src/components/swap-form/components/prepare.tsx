@@ -1,16 +1,24 @@
 'use client'
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FC } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller, useForm } from 'react-hook-form'
 import { ArrowDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SwapInput } from './swap-input'
 import { Skeleton as SkeletonUI } from '../../ui/skeleton'
 import { Box } from './box'
+import { SwapFormSchema, SwapFormValues } from '../schema'
+import React from 'react'
 
 type SwapFormData = {
   fromAmount: string
   toAmount: string
+}
+
+enum SwapFormFields {
+  FROM_AMOUNT = 'fromAmount',
+  TO_AMOUNT = 'toAmount',
 }
 
 type Token = {
@@ -20,58 +28,111 @@ type Token = {
   chain: string
 }
 
-type SwapPrepareProps = {
-  onNext: (data: SwapFormData & { fromToken: Token; toToken: Token }) => void
+type Props = {
+  fromToken: {
+    name: string
+    symbol: string
+    networkId: number
+    amount: number
+    dollarValue: string
+    logo: string
+  }
+  toToken: {
+    name: string
+    symbol: string
+    networkId: number
+    amount: string
+    dollarValue: string
+    logo: string
+    decimals: number
+  }
+  onAmountChange: (value: string) => void
+  onSubmit: () => void
+  isUpdating?: boolean
+  buttonDisabled?: boolean
+  actionType: 'swap'
+  isOperationInProgress?: boolean
 }
 
-const tokens: Token[] = [
-  { symbol: 'ETH', name: 'Ethereum', icon: '🔷', chain: 'Mantle' },
-  { symbol: 'USDC', name: 'USD Coin', icon: '💰', chain: 'Mantle' },
-  { symbol: 'BTC', name: 'Bitcoin', icon: '₿', chain: 'Mantle' },
-]
-
-const SwapPrepare = ({ onNext }: SwapPrepareProps) => {
-  const [fromToken, setFromToken] = useState<Token>(tokens[0])
-  const [toToken, setToToken] = useState<Token>(tokens[1])
-
-  const { register, handleSubmit, watch, setValue } = useForm<SwapFormData>({
+const SwapPrepare: FC<Props> = ({
+  fromToken,
+  toToken,
+  onAmountChange,
+  onSubmit,
+  isUpdating,
+  buttonDisabled,
+  actionType,
+  isOperationInProgress,
+}) => {
+  const {
+    control,
+    handleSubmit,
+    register,
+    watch,
+    formState: { isValid },
+  } = useForm<SwapFormValues>({
+    resolver: zodResolver(SwapFormSchema),
+    mode: 'onChange',
     defaultValues: {
-      fromAmount: '0.01',
-      toAmount: '25.770357',
+      fromAmount: String(fromToken.amount ?? ''),
     },
   })
 
+  // Sync form with external onAmountChange
   const fromAmount = watch('fromAmount')
-  const toAmount = watch('toAmount')
+  React.useEffect(() => {
+    onAmountChange(fromAmount || '')
+  }, [fromAmount, onAmountChange])
 
-  // Simulate exchange rate calculation
-  const fromUSD = parseFloat(fromAmount) * 2567.7 || 0
-  const toUSD = parseFloat(toAmount) * 0.9999 || 0
-
-  const onSubmit = (data: SwapFormData) => {
-    onNext({
-      ...data,
-      fromToken,
-      toToken,
-    })
-  }
+  // Calculate USD values
+  const fromUSD = Number(fromToken.dollarValue) || 0
+  const toUSD = Number(toToken.dollarValue) || 0
 
   return (
     <Box>
       <h1 className="text-white text-2xl font-semibold mb-6">Swap</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-        <SwapInput register={register('fromAmount')} token={fromToken} usdValue={fromUSD} />
+        <Controller
+          name={SwapFormFields.FROM_AMOUNT}
+          control={control}
+          render={({ field }) => (
+            <SwapInput
+              register={register('fromAmount')}
+              value={field.value}
+              onChange={field.onChange}
+              token={{
+                symbol: fromToken.symbol,
+                name: fromToken.name,
+                icon: fromToken.logo,
+                chain: String(fromToken.networkId),
+              }}
+              usdValue={fromUSD}
+            />
+          )}
+        />
 
         {/* Swap Arrow Button */}
         <div className="size-8 bg-gray-700 rounded-full flex items-center justify-center mx-auto">
           <ArrowDown className="size-5 text-gray-400" />
         </div>
 
-        <SwapInput register={register('toAmount')} token={toToken} usdValue={toUSD} readOnly />
+        <SwapInput
+          register={{} as any}
+          value={toToken.amount}
+          token={{
+            symbol: toToken.symbol,
+            name: toToken.name,
+            icon: toToken.logo,
+            chain: String(toToken.networkId),
+          }}
+          usdValue={toUSD}
+          readOnly
+        />
 
         <Button
           type="submit"
+          disabled={buttonDisabled || isOperationInProgress || !isValid}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl mt-6"
         >
           Continue
@@ -107,4 +168,4 @@ const Component = Object.assign(SwapPrepare, {
 })
 
 export { Component as SwapPrepare }
-export type { SwapPrepareProps, SwapFormData, Token }
+export type { Props as SwapPrepareProps, SwapFormData, Token }

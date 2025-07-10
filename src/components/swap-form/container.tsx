@@ -1,19 +1,19 @@
 'use client'
 
-import { FC, useRef, useState } from 'react'
-import { SwapForm, SwapData, SwapStep } from './form'
-import { ProgressProps } from './components/progress'
+import { FC, useCallback, useMemo, useRef, useState, useEffect } from 'react'
+import { SwapForm, SwapFormSteps } from './form'
 import { useChainId, useSendTransaction, useSwitchChain, useWaitForTransactionReceipt } from 'wagmi'
 import {
   TransactionApiResult,
   TransactionRequest,
   TransactionResponseType,
 } from '@/types/api/transaction'
-import { useDebounce, useTokenApproval } from '@/hooks'
+import { isNativeToken, useDebounce, useTokenApproval } from '@/hooks'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { parseUnits } from 'viem'
 import { getQuote } from '@/lib/lifi'
 import { SwapFormError } from './components/error'
+import { findChainNameById } from '@/lib/lifi/helpers'
 
 type Props = {
   actionType: 'swap'
@@ -41,7 +41,7 @@ const SwapContainer: FC<Props> = ({
   toTokenDecimals,
 }) => {
   //
-  const [currentStep, setCurrentStep] = useState<SwapStep>('PREPARE')
+  const [currentStep, setCurrentStep] = useState<SwapFormSteps>('PREPARE')
   const chainId = useChainId()
   const { switchChainAsync } = useSwitchChain()
   const [isSwapping, setIsSwapping] = useState(false)
@@ -101,6 +101,16 @@ const SwapContainer: FC<Props> = ({
     placeholderData: keepPreviousData,
   })
 
+  // Update lastValidData when API data changes
+  useEffect(() => {
+    if (data?.ok && data.data) {
+      setLastValidData(data.data)
+      setCurrentError(null)
+    } else if (data && !data.ok) {
+      setCurrentError(data.error.message)
+    }
+  }, [data])
+
   const { needsApproval, approve, isApproving, isApproveError, approveError } = useTokenApproval(
     lastValidData?.fromToken.address || '',
     lastValidData?.transaction.approvalAddress || undefined,
@@ -122,56 +132,95 @@ const SwapContainer: FC<Props> = ({
   const txFailureReason =
     (failureReason as any)?.shortMessage || (receiptError as any)?.shortMessage || approvalError
 
+  const onAmountChange = useCallback((newAmount: string) => {
+    setFromAmount(newAmount)
+  }, [])
+
+  const onPrepareSubmit = useCallback(() => {
+    setCurrentStep('CHECK')
+  }, [])
+
+  const onConfirm = useCallback(async () => {
+    if (!lastValidData || !lastValidData.transaction.data) return
+
+    try {
+      // Step 1: Switch chain if needed
+      if (lastValidData.transaction.data.chainId !== chainId) {
+        await switchChainAsync({
+          chainId: lastValidData.transaction.data.chainId!,
+        })
+      }
+
+      // Step 2: Handle token approval for ERC-20 tokens
+      if (!isNativeToken(fromAsset)) {
+        if (needsApproval) {
+          await approve()
+        }
+      }
+
+      // Step 3: Execute the swap transaction
+      await sendTransactionAsync(lastValidData.transaction.data as any)
+    } catch (error) {
+      console.error('Error in onConfirm:', error)
+      setIsSwapping(false)
+    }
+  }, [
+    chainId,
+    lastValidData,
+    fromAsset,
+    sendTransactionAsync,
+    switchChainAsync,
+    needsApproval,
+    approve,
+  ])
+
+  const isOperationInProgress = isSwapping || isPending || isApproving
+
+  // Determine button text and disabled state
+  const buttonState = useMemo(() => {
+    // Check if transaction is completed (success or error)
+    const isTransactionCompleted =
+      receiptStatus === 'success' || receiptStatus === 'error' || isError
+
+    if (isTransactionCompleted) return { text: 'Confirm', disabled: true }
+    if (isApproving) return { text: 'Confirm', disabled: true }
+    if (isSwapping || isPending) return { text: 'Confirm', disabled: true }
+    if (needsApproval && !isNativeToken(fromAsset))
+      return { text: 'Approve & Swap', disabled: false }
+    if (!lastValidData) return { text: 'Confirm', disabled: true }
+    if (currentError) return { text: 'Confirm', disabled: true }
+    return { text: 'Confirm', disabled: false }
+  }, [
+    currentError,
+    fromAsset,
+    isApproving,
+    isPending,
+    isSwapping,
+    lastValidData,
+    needsApproval,
+    receiptStatus,
+    isError,
+  ])
   // END
-
-  const [swapData, setSwapData] = useState<SwapData | null>(null)
-
-  const handlePrepareNext = (data: SwapData) => {
-    setSwapData(data)
-
-    // Only advance to CHECK if we're currently on PREPARE
-    if (currentStep === 'PREPARE') {
-      setCurrentStep('CHECK')
-    }
-  }
-
-  const handleReviewConfirm = () => {
-    if (swapData) {
-      handleTransaction(swapData)
-    }
-    setCurrentStep('PROGRESS')
-  }
-
-  const handleTransaction = async (data: SwapData) => {
-    console.log('🚀 Starting transaction with data:', data)
-  }
-
-  // Create progress props based on current state
-  const getProgressProps = (): ProgressProps | undefined => {
-    if (!swapData) return undefined
-
-    return {
-      status: 'pending',
-      receiveToken: {
-        symbol: swapData.toToken.symbol,
-        amount: swapData.toAmount,
-        logo: swapData.toToken.icon,
-        decimals: 6, // TODO: Get from actual token data
-        chain: swapData.toToken.chain,
-      },
-      explorer: 'https://basescan.org', // TODO: Get from chain config
-      txHash: undefined,
-    }
-  }
 
   return (
     <Wrapper>
       <SwapForm
-        currentStep={currentStep}
-        swapData={swapData}
-        onPrepareNext={handlePrepareNext}
-        onReviewConfirm={handleReviewConfirm}
-        progressProps={getProgressProps()}
+        step={currentStep}
+        actionType={actionType}
+        fromAmount={fromAmount}
+        toTokenDecimals={toTokenDecimals}
+        data={lastValidData}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        buttonState={buttonState}
+        isOperationInProgress={isOperationInProgress}
+        onAmountChange={onAmountChange}
+        onPrepareSubmit={onPrepareSubmit}
+        onConfirm={onConfirm}
+        txHash={hash}
+        txStatus={txStatus}
+        explorer={lastValidData?.explorer}
       />
 
       <SwapFormError error={errorMessage || txFailureReason} />
