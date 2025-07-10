@@ -5,7 +5,7 @@ import { type ReactNode } from 'react'
 import { cookieStorage, createConfig, createStorage, http, type State, WagmiProvider } from 'wagmi'
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit'
 
-import { mantle } from 'wagmi/chains'
+import { metis } from 'wagmi/chains'
 
 type Props = {
   children: ReactNode
@@ -14,14 +14,14 @@ type Props = {
 
 export const wagmiConfig = createConfig(
   getDefaultConfig({
-    chains: [mantle],
+    chains: [metis],
 
     ssr: true,
     storage: createStorage({
       storage: cookieStorage,
     }),
     transports: {
-      [mantle.id]: http(),
+      [metis.id]: http(),
     },
 
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
