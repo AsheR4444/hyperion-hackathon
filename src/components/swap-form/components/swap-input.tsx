@@ -2,6 +2,7 @@ import { UseFormRegisterReturn } from 'react-hook-form'
 import { Input } from '../../ui/input'
 import { Skeleton } from '../../ui/skeleton'
 import Image from 'next/image'
+import { NumberFormat } from '@/components/ui/number-format'
 
 type Token = {
   symbol: string
@@ -15,7 +16,7 @@ type SwapInputProps = {
   value?: string
   onChange?: (value: string) => void
   token: Token
-  usdValue: number
+  usdValue?: number
   placeholder?: string
   readOnly?: boolean
 }
@@ -42,7 +43,20 @@ const SwapInput = ({
             placeholder={placeholder}
             readOnly={readOnly}
           />
-          <div className="text-gray-400 text-sm mt-2">$ {usdValue.toFixed(4)}</div>
+          {usdValue ? (
+            <span className="text-gray-400 text-sm mt-2">
+              <NumberFormat
+                value={Number(usdValue)}
+                displayType="text"
+                thousandSeparator=","
+                decimalScale={4}
+                fixedDecimalScale
+                currency="$"
+              />
+            </span>
+          ) : (
+            <Skeleton className="w-[80px] h-[21px]" />
+          )}
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 bg-gray-700 rounded-lg px-3 py-2">

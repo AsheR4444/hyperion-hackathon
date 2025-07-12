@@ -107,7 +107,7 @@ const SwapPrepare: FC<Props> = ({
                 icon: fromToken.logo,
                 chain: String(fromToken.networkId),
               }}
-              usdValue={fromUSD}
+              usdValue={isUpdating ? void 0 : fromUSD}
             />
           )}
         />
@@ -126,7 +126,7 @@ const SwapPrepare: FC<Props> = ({
             icon: toToken.logo,
             chain: String(toToken.networkId),
           }}
-          usdValue={toUSD}
+          usdValue={isUpdating ? void 0 : toUSD}
           readOnly
         />
 

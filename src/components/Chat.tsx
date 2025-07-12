@@ -83,7 +83,7 @@ export function Chat() {
           toChain="metis"
           address="0x72D2Af8EF64196F8A9267803b775Bf2342910083"
           fromTokenDecimals={18}
-          toTokenDecimals={18}
+          toTokenDecimals={6}
         />
       </div>
 

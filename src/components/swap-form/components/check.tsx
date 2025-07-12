@@ -7,8 +7,8 @@ import { TransactionResponseType } from '@/types/api/transaction'
 import { FC } from 'react'
 import Image from 'next/image'
 import { NumberFormat } from '@/components/ui/number-format'
-import { formatUnits } from 'viem'
 import { Skeleton } from '@/components/ui/skeleton'
+import { formatUnits } from 'viem'
 
 type Props = {
   fromToken: {
@@ -45,6 +45,8 @@ const TransactionReview: FC<Props> = ({
   buttonDisabled,
   buttonText,
 }) => {
+  console.log(toToken)
+
   return (
     <Box>
       {/* Header */}
@@ -71,7 +73,19 @@ const TransactionReview: FC<Props> = ({
             )}
             <div>
               <div className="text-white font-medium">{fromToken.symbol}</div>
-              <div className="text-white text-lg font-semibold">{fromToken.amount}</div>
+              {!isUpdating ? (
+                <span className="text-white text-lg font-semibold">
+                  <NumberFormat
+                    value={Number(formatUnits(BigInt(fromToken.amount || 0), fromToken.decimals))}
+                    displayType="text"
+                    thousandSeparator=","
+                    hideCurrency
+                    fixedDecimalScale
+                  />
+                </span>
+              ) : (
+                <Skeleton className="w-[60px] h-[21px]" />
+              )}
             </div>
           </div>
 
@@ -95,7 +109,19 @@ const TransactionReview: FC<Props> = ({
             )}
             <div>
               <div className="text-white font-medium">{toToken.symbol}</div>
-              <div className="text-white text-lg font-semibold">{toToken.amount}</div>
+              {!isUpdating ? (
+                <span className="text-white text-lg font-semibold">
+                  <NumberFormat
+                    value={Number(formatUnits(BigInt(toToken.amount || 0), toToken.decimals))}
+                    displayType="text"
+                    thousandSeparator=","
+                    hideCurrency
+                    fixedDecimalScale
+                  />
+                </span>
+              ) : (
+                <Skeleton className="w-[60px] h-[21px]" />
+              )}
             </div>
           </div>
         </div>
@@ -112,7 +138,7 @@ const TransactionReview: FC<Props> = ({
         {/* Slippage */}
         <div className="flex justify-between items-center py-3 border-b border-dotted border-gray-600">
           <span className="text-gray-400">Slippage</span>
-          <span className="text-white font-medium">{slippage}</span>
+          <span className="text-white font-medium">{slippage * 100}%</span>
         </div>
 
         {/* Network fee */}
