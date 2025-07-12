@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: 'OrbitAI | Metis',
   description: 'Your AI Metis Copilot',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/logo.ico',
   },
 }
 
