@@ -18,40 +18,46 @@ type Props = {
   txHash: `0x${string}` | undefined
 }
 
+const ProgressStatus: FC = () => {
+  return (
+    <div className="flex flex-col items-center justify-center gap-y-4">
+      <Loader2Icon className="size-10 animate-spin" />
+
+      <span className="text-white text-lg font-medium">Transaction processing...</span>
+    </div>
+  )
+}
+
+const ProgressSuccess: FC = () => {
+  return (
+    <div className="flex flex-col items-center justify-center gap-y-4">
+      <CheckCircle2Icon className="size-10 text-success" />
+
+      <span className="text-white text-lg font-medium">Transaction successful</span>
+    </div>
+  )
+}
+
+const ProgressError: FC = () => {
+  return (
+    <div className="flex flex-col items-center justify-center gap-y-4">
+      <CircleXIcon className="size-10 text-error" />
+
+      <span className="text-white text-lg font-medium">Transaction failed</span>
+    </div>
+  )
+}
+
 const Progress: FC<Props> = ({ status, receiveToken, explorer, txHash }) => {
-  const getStatusConfig = () => {
-    switch (status) {
-      case 'pending':
-        return {
-          icon: <Loader2Icon className="w-12 h-12 text-blue-400 animate-spin" />,
-          title: 'Transaction processing...',
-          description: 'Please wait while we execute your transaction',
-        }
-      case 'success':
-        return {
-          icon: <CheckCircle2Icon className="w-12 h-12 text-green-400" />,
-          title: 'Transaction completed!',
-          description: 'Your swap has been successfully executed',
-        }
-      case 'error':
-        return {
-          icon: <CircleXIcon className="w-12 h-12 text-red-400" />,
-          title: 'Transaction failed',
-          description: 'Something went wrong with your transaction',
-        }
-    }
-  }
-
-  const statusConfig = getStatusConfig()
-
   return (
     <Box>
       <div className="flex flex-col items-center text-center space-y-6">
         {/* Status Icon */}
-        <div className="flex justify-center">{statusConfig.icon}</div>
-
-        {/* Title */}
-        <h2 className="text-xl font-semibold text-white">{statusConfig.title}</h2>
+        <div className="flex justify-center">
+          {status === 'pending' && <ProgressStatus />}
+          {status === 'success' && <ProgressSuccess />}
+          {status === 'error' && <ProgressError />}
+        </div>
 
         {/* Token Info */}
         <div className="flex items-center gap-3 bg-gray-800 rounded-xl p-4">

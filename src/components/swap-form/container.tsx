@@ -68,7 +68,7 @@ const SwapContainer: FC<Props> = ({
 
   const { status: receiptStatus, error: receiptError } = useWaitForTransactionReceipt({
     hash,
-    confirmations: 3,
+    confirmations: 2,
     query: {
       refetchOnWindowFocus: false,
       gcTime: Infinity,
@@ -100,16 +100,6 @@ const SwapContainer: FC<Props> = ({
     refetchInterval: 10000,
     placeholderData: keepPreviousData,
   })
-
-  // Update lastValidData when API data changes
-  useEffect(() => {
-    if (data?.ok && data.data) {
-      setLastValidData(data.data)
-      setCurrentError(null)
-    } else if (data && !data.ok) {
-      setCurrentError(data.error.message)
-    }
-  }, [data])
 
   const { needsApproval, approve, isApproving, isApproveError, approveError } = useTokenApproval(
     lastValidData?.fromToken.address || '',
@@ -202,6 +192,24 @@ const SwapContainer: FC<Props> = ({
     isError,
   ])
   // END
+
+  // Clear error when amount changes
+  useEffect(() => {
+    if (fromAmount !== lastAmountRef.current) {
+      setCurrentError(null)
+      lastAmountRef.current = fromAmount
+    }
+  }, [fromAmount])
+
+  // Update lastValidData when API data changes
+  useEffect(() => {
+    if (data?.ok && data.data) {
+      setLastValidData(data.data)
+      setCurrentError(null)
+    } else if (data && !data.ok) {
+      setCurrentError(data.error.message)
+    }
+  }, [data])
 
   return (
     <Wrapper>

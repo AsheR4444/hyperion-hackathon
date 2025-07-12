@@ -76,7 +76,7 @@ export function Chat() {
 
         <SwapContainer
           actionType="swap"
-          amount="100"
+          amount="0.01"
           fromAsset="metis"
           fromChain="metis"
           toAsset="m.USDT"
