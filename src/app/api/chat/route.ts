@@ -3,7 +3,7 @@ import { Agent } from 'alith'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-export const InputSchema = z
+const InputSchema = z
   .object({
     x: z.number().describe('The number to substract from'),
     y: z.number().describe('The number to substract'),
