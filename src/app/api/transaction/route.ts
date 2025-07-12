@@ -20,7 +20,7 @@ const getConfig = async () => {
   )
 
   return createConfig({
-    integrator: 'AirPulseAI',
+    integrator: 'testimggggg',
     apiKey: process.env.LIFI_API_KEY,
     chains,
   })
