@@ -101,6 +101,7 @@ const SwapPrepare: FC<Props> = ({
               register={register('fromAmount')}
               value={field.value}
               onChange={field.onChange}
+              readOnly={isOperationInProgress}
               token={{
                 symbol: fromToken.symbol,
                 name: fromToken.name,

@@ -4,6 +4,8 @@ import { Box } from './box'
 import { FC } from 'react'
 import Image from 'next/image'
 import { Skeleton } from '@/components/ui/skeleton'
+import { NumberFormat } from '@/components/ui/number-format'
+import { formatUnits } from 'viem'
 
 type Props = {
   status: 'pending' | 'success' | 'error'
@@ -74,7 +76,13 @@ const Progress: FC<Props> = ({ status, receiveToken, explorer, txHash }) => {
           )}
           <div className="text-left">
             <div className="text-white font-semibold text-lg">
-              {receiveToken.amount} {receiveToken.symbol}
+              <NumberFormat
+                value={Number(formatUnits(BigInt(receiveToken.amount || 0), receiveToken.decimals))}
+                displayType="text"
+                thousandSeparator=","
+                fixedDecimalScale
+                suffix={receiveToken.symbol}
+              />
             </div>
             <div className="text-gray-400 text-sm">on {receiveToken.chain}</div>
           </div>

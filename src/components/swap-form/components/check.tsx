@@ -169,10 +169,11 @@ const TransactionReview: FC<Props> = ({
 
       {/* Confirm Button */}
       <Button
+        disabled={buttonDisabled}
         onClick={onConfirm}
         className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl text-base"
       >
-        Confirm
+        {buttonText}
       </Button>
     </Box>
   )
