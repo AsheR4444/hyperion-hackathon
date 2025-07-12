@@ -58,7 +58,7 @@ const SwapInput = ({
               <Skeleton className="size-5 rounded-full" />
             )}
             <span className="text-white font-medium">{token.symbol}</span>
-            <span className="text-gray-400 text-sm">{token.chain}</span>
+            <span className="text-gray-400 text-sm">Metis</span>
           </div>
         </div>
       </div>

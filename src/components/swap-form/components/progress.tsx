@@ -1,5 +1,5 @@
 import { CircleXIcon, CheckCircle2Icon, Loader2Icon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from './custom-button'
 import { Box } from './box'
 import { FC } from 'react'
 import Image from 'next/image'
@@ -44,13 +44,6 @@ const Progress: FC<Props> = ({ status, receiveToken, explorer, txHash }) => {
 
   const statusConfig = getStatusConfig()
 
-  const handleViewTransaction = () => {
-    if (txHash && explorer) {
-      const url = `${explorer}/tx/${txHash}`
-      window.open(url, '_blank', 'noopener,noreferrer')
-    }
-  }
-
   return (
     <Box>
       <div className="flex flex-col items-center text-center space-y-6">
@@ -81,15 +74,17 @@ const Progress: FC<Props> = ({ status, receiveToken, explorer, txHash }) => {
           </div>
         </div>
 
-        {/* View Transaction Button */}
-        {txHash && (
-          <Button
-            onClick={handleViewTransaction}
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl"
-          >
-            View transaction
-          </Button>
-        )}
+        <Button
+          asLink
+          isExternal
+          href={`${explorer}/tx/${txHash}`}
+          variant="default"
+          size="sm"
+          fullWidth
+          disabled={!txHash || status === 'pending'}
+        >
+          View transaction
+        </Button>
       </div>
     </Box>
   )

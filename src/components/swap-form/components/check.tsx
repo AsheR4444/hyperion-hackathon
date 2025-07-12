@@ -6,7 +6,7 @@ import { Box } from './box'
 import { TransactionResponseType } from '@/types/api/transaction'
 import { FC } from 'react'
 import Image from 'next/image'
-import { NumberFormat } from '@/components/number-format'
+import { NumberFormat } from '@/components/ui/number-format'
 import { formatUnits } from 'viem'
 import { Skeleton } from '@/components/ui/skeleton'
 

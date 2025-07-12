@@ -138,13 +138,74 @@ const SwapForm: FC<SwapFormProps> = ({
     <div>
       <div className="space-y-6">
         {/* Step 1: Always show PREPARE step */}
-        <SwapPrepare {...prepareProps} />
+        <SwapPrepare
+          actionType={actionType}
+          fromToken={{
+            name: fromToken.name,
+            symbol: fromToken.symbol,
+            networkId: fromToken.chainId,
+            amount: Number(fromAmount),
+            dollarValue: fromToken.amountUSD || '0',
+            logo: fromToken.logoURI || '',
+          }}
+          toToken={{
+            name: toToken.name,
+            symbol: toToken.symbol,
+            networkId: toToken.chainId,
+            amount: toToken.amount,
+            dollarValue: toToken.amountUSD || '0',
+            logo: toToken.logoURI || '',
+            decimals: toTokenDecimals,
+          }}
+          onAmountChange={onAmountChange}
+          onSubmit={onPrepareSubmit}
+          isUpdating={isFetching && !isLoading}
+          buttonDisabled={buttonState.disabled}
+          isOperationInProgress={isOperationInProgress}
+        />
 
         {/* Step 2: Show CHECK step when we're on CHECK or PROGRESS */}
-        {(step === 'CHECK' || step === 'PROGRESS') && <TransactionReview {...reviewProps} />}
+        {(step === 'CHECK' || step === 'PROGRESS') && (
+          <TransactionReview
+            fromToken={{
+              name: fromToken.name,
+              symbol: fromToken.symbol,
+              amount: Number(fromToken.amount),
+              logo: fromToken.logoURI || '',
+              decimals: fromToken.decimals,
+            }}
+            toToken={{
+              name: toToken.name,
+              symbol: toToken.symbol,
+              amount: toToken.amount,
+              logo: toToken.logoURI || '',
+              decimals: toTokenDecimals,
+            }}
+            slippage={data.slippage || 0}
+            minReceiveAmount={data.minReceiveAmount}
+            gasCosts={data.gasCosts}
+            onConfirm={onConfirm}
+            isUpdating={isFetching && !isLoading}
+            buttonDisabled={buttonState.disabled}
+            buttonText={buttonState.text}
+          />
+        )}
 
         {/* Step 3: Show PROGRESS step only when we're on PROGRESS */}
-        {step === 'PROGRESS' && <Progress {...progressProps} />}
+        {step === 'PROGRESS' && (
+          <Progress
+            status={txStatus === 'error' ? 'error' : (txStatus as any)}
+            receiveToken={{
+              symbol: toToken.symbol,
+              amount: toToken.amount,
+              logo: toToken.logoURI || '',
+              decimals: toTokenDecimals,
+              chain: findChainNameById(toToken.chainId),
+            }}
+            explorer={explorer || ''}
+            txHash={txHash as `0x${string}` | undefined}
+          />
+        )}
       </div>
     </div>
   )
