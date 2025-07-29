@@ -4,13 +4,21 @@ import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Search, Send } from 'lucide-react'
+import { SearchCard } from './SearchCard'
 
 interface SearchFormProps {
   onSendMessage: (message: string) => void
   isLoading?: boolean
+  isNoMessages: boolean
 }
 
-export function SearchForm({ onSendMessage, isLoading = false }: SearchFormProps) {
+const searchCards = [
+  { title: 'Swap 50 m.USDC to METIS', type: 'onchain' as const },
+  { title: 'Swap 1 WETH to METIS', type: 'onchain' as const },
+  { title: 'Swap 2 m.DAI to WMETIS', type: 'onchain' as const },
+]
+
+export function SearchForm({ onSendMessage, isLoading = false, isNoMessages }: SearchFormProps) {
   const [query, setQuery] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,6 +31,18 @@ export function SearchForm({ onSendMessage, isLoading = false }: SearchFormProps
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-0">
+      {isNoMessages && (
+        <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+          {searchCards.map((card, index) => (
+            <SearchCard
+              key={index}
+              title={card.title}
+              onClick={() => onSendMessage(card.title)}
+              type={card.type}
+            />
+          ))}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative flex items-center">
           <Search className="absolute left-3 sm:left-4 h-4 w-4 sm:h-5 sm:w-5 text-gray-400 z-10" />

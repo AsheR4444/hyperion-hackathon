@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Message } from '@/types/chat'
 import { ChatMessages } from './ChatMessages'
 import { SearchForm } from './SearchForm'
-import { SwapContainer } from './swap-form/container'
+import { EmptyState } from './empty-state'
 
 // Симуляция ответа агента
 const simulateAgentResponse = async (userMessage: string): Promise<string> => {
@@ -26,6 +26,7 @@ const simulateAgentResponse = async (userMessage: string): Promise<string> => {
 export function Chat() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const isNoMessages = messages.length === 0
 
   const handleSendMessage = async (content: string) => {
     // Создаем сообщение пользователя
@@ -73,8 +74,9 @@ export function Chat() {
       {/* Сообщения чата - растут сверху вниз */}
       <div className="flex-1 overflow-y-auto pt-4 scrollbar-hide pb-10">
         <ChatMessages messages={messages} isLoading={isLoading} />
+        {isNoMessages && <EmptyState />}
 
-        <SwapContainer
+        {/* <SwapContainer
           actionType="swap"
           amount="0.01"
           fromAsset="metis"
@@ -84,12 +86,16 @@ export function Chat() {
           address="0x72D2Af8EF64196F8A9267803b775Bf2342910083"
           fromTokenDecimals={18}
           toTokenDecimals={6}
-        />
+        /> */}
       </div>
 
       {/* Форма ввода - зафиксирована внизу с отступом 30px */}
-      <div className="flex-shrink-0 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-5">
-        <SearchForm onSendMessage={handleSendMessage} isLoading={isLoading} />
+      <div className="flex-shrink-0 w-full max-w-3xl mx-auto px-3 md:px-0 pb-5">
+        <SearchForm
+          onSendMessage={handleSendMessage}
+          isLoading={isLoading}
+          isNoMessages={isNoMessages}
+        />
       </div>
     </div>
   )
