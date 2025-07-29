@@ -1,5 +1,5 @@
-const XLogo = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={21} fill="none" {...props}>
+const XLogo = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={21} fill="none">
     <mask
       id="a"
       width={21}
