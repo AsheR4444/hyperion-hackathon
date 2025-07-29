@@ -13,10 +13,10 @@ export function SearchCard({ title, onClick, type }: SearchCardProps) {
     <div
       role="button"
       onClick={onClick}
-      className="group p-4 bg-gray-800 border border-gray-600 rounded-xl hover:border-amber-400 transition-colors duration-200 text-left cursor-pointer hover:bg-sky-700"
+      className="group p-4 bg-gray-800 border-2 border-gray-600 rounded-xl transition-all duration-200 text-left cursor-pointer hover:border-blue-500"
     >
       <p className="text-xs text-blue-200 capitalize mb-2">{type}</p>
-      <p className="text-sm text-gray-200 group-hover:text-white transition-colors">{title}</p>
+      <p className="text-sm text-gray-200">{title}</p>
     </div>
   )
 }

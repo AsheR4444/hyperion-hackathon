@@ -8,14 +8,14 @@ import { EmptyState } from './empty-state'
 
 // Симуляция ответа агента
 const simulateAgentResponse = async (userMessage: string): Promise<string> => {
-  // Простые ответы для демонстрации
   const responses = [
-    `Интересный вопрос о "${userMessage}". Позвольте мне подумать...`,
-    `Вы спросили: "${userMessage}". Это действительно важная тема.`,
-    `Относительно "${userMessage}" - есть несколько аспектов, которые стоит рассмотреть.`,
-    `Спасибо за вопрос о "${userMessage}". Вот что я могу сказать по этому поводу...`,
-    `"${userMessage}" - отличная тема для обсуждения. Давайте разберем это подробнее.`,
+    `Interesting question about "${userMessage}". Let me think...`,
+    `You asked: "${userMessage}". This is really important topic.`,
+    `About "${userMessage}" - there are several aspects that need to be considered.`,
+    `Thank you for asking about "${userMessage}". Here's what I can say about this...`,
+    `"${userMessage}" - great topic for discussion. Let's discuss it in more detail.`,
   ]
+  // Простые ответы для демонстрации
 
   // Случайная задержка 1-3 секунды
   await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 2000))
