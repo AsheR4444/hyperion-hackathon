@@ -29,7 +29,7 @@ export function SearchForm({ onSendMessage, isLoading = false }: SearchFormProps
 
           <Input
             type="text"
-            placeholder="Swap 0.01 ETH for MNT"
+            placeholder="Swap 1 WETH to m.USDC in Metis"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-10 sm:pl-12 pr-28 sm:pr-32 py-3 sm:py-4 h-12 sm:h-14 
