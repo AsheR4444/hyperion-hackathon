@@ -1,66 +1,37 @@
-import { z } from 'zod'
-import { Agent } from 'alith'
-import { NextResponse } from 'next/server'
+import { streamText } from 'ai'
+
 import { systemPrompt } from '@/lib/alith'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
+import { showOnchainUI } from '@/app/api/chat/tools'
 
-export const InputSchema = z
-  .object({
-    x: z.number().describe('The number to substract from'),
-    y: z.number().describe('The number to substract'),
-  })
-  .strip()
-
-// @ts-expect-error
-const agent = new Agent({
-  model: 'gpt-4',
-  apiKey: process.env.OPENAI_API_KEY,
-  preamble: systemPrompt,
-  tools: [
-    {
-      name: 'subtract',
-      description: 'Subtract y from x (i.e.: x - y)',
-      // @ts-expect-error
-      parameters: InputSchema,
-      // @ts-expect-error
-      handler: (x: number, y: number) => {
-        return x - y
-      },
-    },
-  ],
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
 })
 
-// // @ts-expect-error
-// const agent = new Agent({
-//   model: 'gpt-4',
-//   apiKey: process.env.OPENAI_API_KEY,
-//   preamble:
-//     'You are a calculator here to help the user perform arithmetic operations. Use the tools provided to answer the user question.',
-//   tools: [
-//     {
-//       name: 'subtract',
-//       description: 'Subtract y from x (i.e.: x - y)',
-//       // @ts-expect-error
-//       parameters: InputSchema,
-//       // @ts-expect-error
-//       handler: (x: number, y: number) => {
-//         return x - y
-//       },
-//     },
-//   ],
-// })
+const chatModel = openrouter.chat('openai/gpt-4.1-mini')
 
 export async function POST(req: Request) {
-  const { message, walletAddress } = await req.json()
+  const { messages, walletAddress } = await req.json()
 
-  if (!message || typeof message !== 'string') {
-    return NextResponse.json({ error: 'Message is required and must be a string' }, { status: 400 })
+  const walletInfoMessage = {
+    role: 'system' as const,
+    content: walletAddress ? `USER_WALLET_ADDRESS: ${walletAddress}` : 'USER_WALLET_ADDRESS: none',
   }
 
-  // Get response from the agent
-  const newMessage = `USER_WALLET_ADDRESS: ${walletAddress}\n\n${message}`
-  const response = await agent.prompt(newMessage)
+  const result = streamText({
+    model: chatModel,
+    system: systemPrompt,
+    tools: {
+      showOnchainUI,
+    },
+    messages: [walletInfoMessage, ...messages],
+    onError: (error) => {
+      console.error('🔴 StreamText Error:', error)
+    },
+    async onFinish({ response }) {
+      // Optionally persist chat with wallet info
+    },
+  })
 
-  console.log(response)
-
-  return NextResponse.json({ response })
+  return result.toDataStreamResponse()
 }

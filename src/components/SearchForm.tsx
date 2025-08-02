@@ -1,15 +1,18 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
+import { Search, Send } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, Send } from 'lucide-react'
 import { SearchCard } from './SearchCard'
 
-interface SearchFormProps {
-  onSendMessage: (message: string) => void
+type SearchFormProps = {
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  onSuggestionClick: (text: string) => void
   isLoading?: boolean
   isNoMessages: boolean
+  value: string
 }
 
 const searchCards = [
@@ -18,17 +21,14 @@ const searchCards = [
   { title: 'Swap 2 m.DAI to WMETIS', type: 'onchain' as const },
 ]
 
-export function SearchForm({ onSendMessage, isLoading = false, isNoMessages }: SearchFormProps) {
-  const [query, setQuery] = useState('')
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (query.trim() && !isLoading) {
-      onSendMessage(query.trim())
-      setQuery('')
-    }
-  }
-
+export function SearchForm({
+  handleSubmit,
+  isLoading = false,
+  isNoMessages,
+  onSuggestionClick,
+  value,
+  handleInputChange,
+}: SearchFormProps) {
   return (
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-0">
       {isNoMessages && (
@@ -37,7 +37,7 @@ export function SearchForm({ onSendMessage, isLoading = false, isNoMessages }: S
             <SearchCard
               key={index}
               title={card.title}
-              onClick={() => onSendMessage(card.title)}
+              onClick={() => onSuggestionClick(card.title)}
               type={card.type}
             />
           ))}
@@ -50,8 +50,8 @@ export function SearchForm({ onSendMessage, isLoading = false, isNoMessages }: S
           <Input
             type="text"
             placeholder="Swap 1 WETH to m.USDC in Metis"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            value={value}
+            onChange={(e) => handleInputChange(e)}
             className="pl-10 sm:pl-12 pr-28 sm:pr-32 py-3 sm:py-4 h-12 sm:h-14 
                      text-sm sm:text-base bg-gray-800/80 border-gray-700 rounded-xl sm:rounded-2xl 
                      focus:bg-gray-800 focus:border-gray-600 transition-all duration-200 
@@ -64,7 +64,7 @@ export function SearchForm({ onSendMessage, isLoading = false, isNoMessages }: S
               size="icon"
               className="h-8 w-8 sm:h-9 sm:w-9 bg-blue-600 hover:bg-blue-700 rounded-lg sm:rounded-xl 
                        text-white transition-colors ml-0.5 sm:ml-1 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!query.trim() || isLoading}
+              disabled={isLoading || !value}
             >
               <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>

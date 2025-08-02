@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react'
-import { Message } from '@/types/chat'
+
 import { UserMessage } from './UserMessage'
 import { AgentMessage } from './AgentMessage'
+import { Message } from 'ai'
 
 interface ChatMessagesProps {
-  messages: Message[]
+  messages: Message[] | undefined
   isLoading?: boolean
 }
 
@@ -20,7 +21,7 @@ export function ChatMessages({ messages, isLoading = false }: ChatMessagesProps)
     scrollToBottom()
   }, [messages, isLoading])
 
-  if (messages.length === 0 && !isLoading) {
+  if (messages?.length === 0 && !isLoading) {
     return null
   }
 

@@ -1,13 +1,11 @@
 import React from 'react'
-import { Message } from '@/types/chat'
 import { Bot } from 'lucide-react'
 
 interface AgentMessageProps {
-  message: Message
-  isLoading?: boolean
+  message: string
 }
 
-export function AgentMessage({ message, isLoading = false }: AgentMessageProps) {
+export function AgentMessage({ message }: AgentMessageProps) {
   return (
     <div className="flex justify-start mb-4">
       <div className="max-w-[80%] sm:max-w-[70%]">
@@ -20,25 +18,7 @@ export function AgentMessage({ message, isLoading = false }: AgentMessageProps) 
           {/* Контент сообщения */}
           <div className="flex-1">
             <div className="bg-gray-800 text-gray-100 rounded-2xl rounded-bl-md px-4 py-3 shadow-lg border border-gray-700">
-              {isLoading ? (
-                <div className="flex items-center space-x-2">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
-                    <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"
-                      style={{ animationDelay: '0.2s' }}
-                    ></div>
-                    <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"
-                      style={{ animationDelay: '0.4s' }}
-                    ></div>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-sm sm:text-base whitespace-pre-wrap break-words">
-                  {message.content}
-                </p>
-              )}
+              <p className="text-sm sm:text-base whitespace-pre-wrap break-words">{message}</p>
             </div>
           </div>
         </div>
