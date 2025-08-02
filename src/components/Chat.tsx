@@ -109,18 +109,6 @@ export function Chat() {
 
         {isNoMessages && <EmptyState />}
 
-        {/* <SwapContainer
-          actionType="swap"
-          amount="0.01"
-          fromAsset="metis"
-          fromChain="metis"
-          toAsset="m.USDT"
-          toChain="metis"
-          address="0x72D2Af8EF64196F8A9267803b775Bf2342910083"
-          fromTokenDecimals={18}
-          toTokenDecimals={6}
-        /> */}
-
         {status === 'submitted' && <ThinkingIndicator />}
       </div>
 

@@ -33,7 +33,7 @@ const ProgressStatus: FC = () => {
 const ProgressSuccess: FC = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-y-4">
-      <CheckCircle2Icon className="size-10 text-success" />
+      <CheckCircle2Icon className="size-10 text-green-500" />
 
       <span className="text-white text-lg font-medium">Transaction successful</span>
     </div>
@@ -43,7 +43,7 @@ const ProgressSuccess: FC = () => {
 const ProgressError: FC = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-y-4">
-      <CircleXIcon className="size-10 text-error" />
+      <CircleXIcon className="size-10 text-red-500" />
 
       <span className="text-white text-lg font-medium">Transaction failed</span>
     </div>

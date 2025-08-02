@@ -13,7 +13,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { parseUnits } from 'viem'
 import { getQuote } from '@/lib/lifi'
 import { SwapFormError } from './components/error'
-import { findChainNameById } from '@/lib/lifi/helpers'
 
 type Props = {
   actionType: 'swap'
@@ -40,7 +39,6 @@ const SwapContainer: FC<Props> = ({
   fromTokenDecimals,
   toTokenDecimals,
 }) => {
-  //
   const [currentStep, setCurrentStep] = useState<SwapFormSteps>('PREPARE')
   const chainId = useChainId()
   const { switchChainAsync } = useSwitchChain()

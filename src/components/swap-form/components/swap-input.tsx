@@ -3,6 +3,8 @@ import { Input } from '../../ui/input'
 import { Skeleton } from '../../ui/skeleton'
 import Image from 'next/image'
 import { NumberFormat } from '@/components/ui/number-format'
+import { useMemo } from 'react'
+import { formatUnits } from 'viem'
 
 type Token = {
   symbol: string
@@ -19,6 +21,7 @@ type SwapInputProps = {
   usdValue?: number
   placeholder?: string
   readOnly?: boolean
+  decimals?: number
 }
 
 const SwapInput = ({
@@ -29,14 +32,23 @@ const SwapInput = ({
   usdValue,
   placeholder = '0.0',
   readOnly = false,
+  decimals,
 }: SwapInputProps) => {
+  const visibleValue = useMemo(() => {
+    if (decimals) {
+      return Number(formatUnits(BigInt(value || 0), decimals))
+    }
+
+    return value
+  }, [value, decimals])
+
   return (
     <div className="bg-gray-800 rounded-xl p-4">
       <div className="flex items-center justify-between mb-2">
         <div>
           <Input
             {...register}
-            value={value}
+            value={visibleValue}
             onChange={(e) => onChange?.(e.target.value)}
             type="text"
             className="bg-transparent border-none text-white text-lg font-medium p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0"

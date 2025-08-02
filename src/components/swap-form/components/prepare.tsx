@@ -129,6 +129,7 @@ const SwapPrepare: FC<Props> = ({
           }}
           usdValue={isUpdating ? void 0 : toUSD}
           readOnly
+          decimals={toToken.decimals}
         />
 
         <Button
