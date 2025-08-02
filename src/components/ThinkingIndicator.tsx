@@ -7,26 +7,16 @@ type Props = {
 }
 
 const thinkingPhrases = [
-  'Mining thoughts from the blockchain',
-  'Validating your request on the mempool',
-  'Consulting the oracle of DeFi wisdom',
-  'Bridging neurons across synapses',
-  'Staking my reputation on this answer',
-  'Swapping confusion for clarity',
-  'Hodling while I process this',
-  'Calculating gas fees for brain power',
-  'Decentralizing my thought process',
-  'Smart contract executing in my mind',
-  'Forking my consciousness for better results',
-  'Liquidity pooling my knowledge',
-  'Yield farming some fresh insights',
-  'Minting a new perspective for you',
-  'Flashing a loan from the wisdom vault',
-  'Wrapping your question in understanding',
-  'Governance voting on the best answer',
-  'Slashing incorrect thoughts from memory',
-  'Airdropping knowledge directly to you',
-  'Burning tokens of confusion',
+  'Alith framework orchestrating AI agents',
+  'OrbitAI protocols analyzing your request',
+  'Sequencer mining insights from the neural pool',
+  'Staking METIS on this answer',
+  'Metis executing AI-native computations',
+  'Hyperion-speed parallel execution engaged',
+  'Generative UI rendering perfect responses',
+  'On-chain tools executing seamlessly',
+  'Cross-chain bridging problems to solutions',
+  'Hyperion hackathon mode: $200K thinking',
 ]
 
 const ThinkingIndicator: FC<Props> = ({ className }) => {
@@ -35,7 +25,7 @@ const ThinkingIndicator: FC<Props> = ({ className }) => {
   }, [])
 
   return (
-    <div className={cn('flex w-full mb-4 justify-start', className)}>
+    <div className={cn('flex w-full mb-4 justify-start animate-pulse', className)}>
       <div
         className={cn(
           'max-w-[80%] px-4 py-3 rounded',
