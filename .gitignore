@@ -10,6 +10,8 @@
 !.yarn/releases
 !.yarn/versions
 
+llm_logs
+
 # testing
 /coverage
 
