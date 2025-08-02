@@ -1,0 +1,271 @@
+{
+  "tokens": {
+    "1088": [
+      {
+        "chainId": 1088,
+        "address": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000",
+        "symbol": "METIS",
+        "name": "METIS",
+        "decimals": 18,
+        "priceUSD": "14.560169145968239",
+        "coinKey": "METIS",
+        "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/9640.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x0000000000000000000000000000000000000000",
+        "symbol": "Metis",
+        "name": "Metis",
+        "decimals": 18,
+        "priceUSD": "14.971453752874002"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x75cb093E4D61d2A2e65D8e0BBb01DE8d89b53481",
+        "symbol": "WMETIS",
+        "name": "Wrapped Metis",
+        "decimals": 18,
+        "priceUSD": "14.56",
+        "coinKey": "WMETIS",
+        "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/9640.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21",
+        "symbol": "m.USDC",
+        "name": "Metis USDC",
+        "decimals": 6,
+        "priceUSD": "0.9997095401006381",
+        "coinKey": "USDC",
+        "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0xbB06DCA3AE6887fAbF931640f67cab3e3a16F4dC",
+        "symbol": "m.USDT",
+        "name": "Metis USDT",
+        "decimals": 6,
+        "priceUSD": "0.9998",
+        "coinKey": "USDT",
+        "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x4c078361FC9BbB78DF910800A991C7c3DD2F6ce0",
+        "symbol": "m.DAI",
+        "name": "Metis DAI",
+        "decimals": 18,
+        "priceUSD": "0.9419",
+        "coinKey": "DAI",
+        "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x420000000000000000000000000000000000000A",
+        "symbol": "WETH",
+        "name": "WETH",
+        "decimals": 18,
+        "priceUSD": "3454.5539849274464",
+        "coinKey": "WETH",
+        "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x7314Ef2CA509490f65F52CC8FC9E0675C66390b8",
+        "symbol": "aMetMETIS",
+        "name": "Aave Metis METIS",
+        "decimals": 18,
+        "priceUSD": "14.94",
+        "coinKey": "aMetMETIS",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x7314ef2ca509490f65f52cc8fc9e0675c66390b8/165f20d6502e8749fa9610468c462af6.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x303241e2B3b4aeD0bb0F8623e7442368FED8Faf3",
+        "symbol": "alUSD",
+        "name": "Alchemix USD",
+        "decimals": 18,
+        "priceUSD": "0.9940066063322492",
+        "coinKey": "alUSD",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x303241e2b3b4aed0bb0f8623e7442368fed8faf3/7a392b1aa4c33cdd3b133c2c858d1a8c.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x85ABAdDcae06efee2CB5F75f33b6471759eFDE24",
+        "symbol": "aMetmDAI",
+        "name": "Aave Metis mDAI",
+        "decimals": 18,
+        "priceUSD": "0.99999335",
+        "coinKey": "aMetmDAI",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x85abaddcae06efee2cb5f75f33b6471759efde24/2b8382087d72983357aec0c67fc5850a.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x885C8AEC5867571582545F894A5906971dB9bf27",
+        "symbol": "aMetmUSDC",
+        "name": "Aave Metis mUSDC",
+        "decimals": 6,
+        "priceUSD": "0.99978104",
+        "coinKey": "aMetmUSDC",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x885c8aec5867571582545f894a5906971db9bf27/d1e0d14800c1e4657fb8c25e0f073cf0.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x8acAe35059C9aE27709028fF6689386a44c09f3a",
+        "symbol": "aMetWETH",
+        "name": "Aave Metis WETH",
+        "decimals": 18,
+        "priceUSD": "3464.67042089",
+        "coinKey": "aMetWETH",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x8acae35059c9ae27709028ff6689386a44c09f3a/39c116500402c61da636a56bedcd749e.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x0E17934B9735D479B2388347fAeF0F4e58b9cc06",
+        "symbol": "alETH",
+        "name": "Alchemix ETH",
+        "decimals": 18,
+        "priceUSD": "3313.2178316020836",
+        "coinKey": "alETH",
+        "logoURI": "https://static.debank.com/image/eth_token/logo_url/0x0100546f2cd4c9d97f798ffc9755e47865ff7ee6/258b7ffef65d8b0a25bda1c72a8fe654.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0xdFA46478F9e5EA86d57387849598dbFB2e964b02",
+        "symbol": "MAI",
+        "name": "Mai Stablecoin",
+        "decimals": 18,
+        "priceUSD": "0.9880566185436663",
+        "coinKey": "MAI",
+        "logoURI": "https://static.debank.com/image/matic_token/logo_url/0xa3fa99a148fa48d14ed51d610c367c61876997f1/be77e8e47016b1e9d3f01b7edc9b8d4f.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0xc12caC7090baa48Ec750CceeC57C80768F6ee58E",
+        "symbol": "STND",
+        "name": "Standard",
+        "decimals": 18,
+        "priceUSD": "0.004403",
+        "coinKey": "STND",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0xc12cac7090baa48ec750cceec57c80768f6ee58e/a4e8c97430c93ec88f2f82e87bf1c759.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0xd9fa75D14c26720d5ce7eE2530793a823e8f07b9",
+        "symbol": "aMetmUSDT",
+        "name": "Aave Metis mUSDT",
+        "decimals": 6,
+        "priceUSD": "0.99961",
+        "coinKey": "aMetmUSDT"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x90fE084F877C65e1b577c7b2eA64B8D8dd1AB278",
+        "symbol": "NETT",
+        "name": "Netswap Token",
+        "decimals": 18,
+        "priceUSD": "0.03452285576175407",
+        "coinKey": "NETT",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x90fe084f877c65e1b577c7b2ea64b8d8dd1ab278/05e43a74f7341f915210c24bda471252.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0xaf20f5f19698f1D19351028cd7103B63D30DE7d7",
+        "symbol": "WAGMI",
+        "name": "Wagmi",
+        "decimals": 18,
+        "priceUSD": "0.004483186842528004",
+        "coinKey": "WAGMI",
+        "logoURI": "https://static.debank.com/image/eth_token/logo_url/0x92cc36d66e9d739d50673d1f27929a371fb83a67/c6c1f662d39d0d3f2be3f96ac98c337f.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x4aAC94985cD83be30164DfE7e9AF7C054D7d2121",
+        "symbol": "HUM",
+        "name": "Hummus",
+        "decimals": 18,
+        "priceUSD": "0.00023250320694644133",
+        "coinKey": "HUM",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x4aac94985cd83be30164dfe7e9af7c054d7d2121/6e9c5f655501aee9b2de7bb90e65d91c.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x69fdb77064ec5c84FA2F21072973eB28441F43F3",
+        "symbol": "TETHYS",
+        "name": "Tethys",
+        "decimals": 18,
+        "priceUSD": "0.00264134402663443",
+        "coinKey": "TETHYS",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x69fdb77064ec5c84fa2f21072973eb28441f43f3/47ad03b69f80e7ad5fe4da4c48a1595a.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x6F05709bc91Bad933346F9E159f0D3FdBc2c9DCE",
+        "symbol": "HERA",
+        "name": "Hera Token",
+        "decimals": 18,
+        "priceUSD": "0.8613858164497223",
+        "coinKey": "HERA",
+        "logoURI": "https://static.debank.com/image/eth_token/logo_url/0xa2c2c937333165d4c5f2dc5f31a43e1239fecfeb/faebb120bf5a60068e33cb30c1d9a59e.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x211Cc4DD073734dA055fbF44a2b4667d5E5fE5d2",
+        "symbol": "sUSDe",
+        "name": "Staked USDe",
+        "decimals": 18,
+        "priceUSD": "1.1847525189140549",
+        "coinKey": "sUSDe",
+        "logoURI": "https://static.debank.com/image/eth_token/logo_url/0x9d39a5de30e57443bff2a8307a4256c8797a3497/613e3c4b4b079a18bf8d7170d5b038bf.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x58538e6A46E07434d7E7375Bc268D3cb839C0133",
+        "symbol": "ENA",
+        "name": "ENA",
+        "decimals": 18,
+        "priceUSD": "0.5395385402813048",
+        "coinKey": "ENA",
+        "logoURI": "https://static.debank.com/image/metis_token/logo_url/0x58538e6a46e07434d7e7375bc268d3cb839c0133/20d567bc301b43d0d2131731f7ac4736.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
+        "symbol": "USDe",
+        "name": "USDe",
+        "decimals": 18,
+        "priceUSD": "1.0006723007887903",
+        "coinKey": "USDe",
+        "logoURI": "https://static.debank.com/image/eth_token/logo_url/0x4c9edd5852cd905f086c759e8383e09bff1e68b3/1228d6e73f70f37ec1f6fe02a3bbe6ff.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x80137510979822322193FC997d400D5A6C747bf7",
+        "symbol": "STONE",
+        "name": "StakeStone Ether",
+        "decimals": 18,
+        "priceUSD": "3617.423677468492",
+        "coinKey": "STONE",
+        "logoURI": "https://static.debank.com/image/manta_token/logo_url/0x80137510979822322193fc997d400d5a6c747bf7/459d9fa5e0183355044954fe46dff73a.png"
+      },
+      {
+        "chainId": 1088,
+        "address": "0x1217BfE6c773EEC6cc4A38b5Dc45B92292B6E189",
+        "symbol": "oUSDT",
+        "name": "OpenUSDT",
+        "decimals": 6,
+        "priceUSD": "0.9996626401621206",
+        "coinKey": "oUSDT"
+      },
+      {
+        "chainId": 1088,
+        "address": "0xd2FE54D1E5F568eB710ba9d898Bf4bD02C7c0353",
+        "symbol": "LINK",
+        "name": "ChainLink Token",
+        "decimals": 18,
+        "priceUSD": "15.823737736269656",
+        "coinKey": "LINK"
+      }
+    ]
+  }
+}
