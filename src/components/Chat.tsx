@@ -54,7 +54,7 @@ export function Chat() {
   const isLoading = status === 'submitted'
 
   return (
-    <div className="h-full flex flex-col max-w-[768px] w-full mx-auto">
+    <div className="h-full flex flex-col max-w-[768px] w-full mx-auto px-4 md:px-0">
       {/* Сообщения чата - растут сверху вниз */}
       <div className="flex-1 overflow-y-auto pt-4 scrollbar-hide pb-10">
         {/* <ChatMessages messages={messages} isLoading={isLoading} /> */}
